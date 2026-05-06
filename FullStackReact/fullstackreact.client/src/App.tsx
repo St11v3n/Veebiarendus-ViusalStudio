@@ -1,10 +1,18 @@
 import { } from 'react';
 import './App.css';
+import PlanetList from './views/PlanetsList'
+import {Routes, Route, Navigate } from "react-router-dom"
 
 
 
-function App() {
-
+export default function App() {
+    return (
+        <Routes>
+            <Route>
+                <Route path="/" element={<Navigate to="/planets" replace />} />
+                <Route path="/planets" element={<PlanetList />} />
+            </Route>
+        </Routes>
+    );
 }
 
-export default App;
