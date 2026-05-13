@@ -1,4 +1,5 @@
 ﻿using FullStackReact.Server.Controllers.Data;
+using FullStackReact.Server.Controllers.Domain;
 using FullStackReact.Server.Controllers.Viewmodel;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,37 @@ namespace FullStackReact.Server.Controllers
                 });
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] PlanetsCreateViewmodel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Name)) {
+                return BadRequest("Name is required");
+            }
+            //Continue with rest of the creation logic
+
+            var planet = new Planets
+            {
+                PlanetsId = Guid.NewGuid(),
+                Name = model.Name,
+                Description = model.Description,
+                Type = model.Type,
+                Mass = model.Mass
+            };
+
+            _context.Planets.Add(planet);
+            _context.SaveChanges();
+
+            return Ok(new
+            {
+                planetsId = planet.PlanetsId,
+                name = planet.Name,
+                descriptin = planet.Description,
+                type = planet.Type,
+                mass = planet.Mass
+            });
+
         }
     }
 }
